@@ -28,7 +28,7 @@
 
 >驱动在内存中通过特征码找未导出函数 `PspTerminateProcess` 的地址，0环和3环通信发送需要删除的进程PID，然后在驱动层调用 `PspTerminateProcess` 强杀进程。
 
-### shellcode
+### 驱动05（shellcode）
 
 > 通过 `TEB` 和 `PEB` 找到 `LDR` 然后找到 `kernel32.dll` 的地址然后通过导出表找到 `GetProcAddress` 的地址。
 >
@@ -89,5 +89,15 @@ int main(int argc, char* argv[])
 }
 ```
 
+### 驱动06
 
++ 通过3环的API加载驱动，注意如果用这种方法加载驱动，驱动必须设置
+
+  ```c
+  pDriver->MajorFunction[IRP_MJ_CREATE] = IrpCreateProc;
+  ```
+
+  否则Ring3调用CreateFile会返回1。
+
++ 都是API用法，貌似没啥好学的，直接抄了一份代码。
 
