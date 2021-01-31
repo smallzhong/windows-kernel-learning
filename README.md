@@ -4,6 +4,8 @@
 
 # windows-kernel-learning
 
+## 驱动
+
 ### 驱动01
 
 > 申请一块内存，并在内存中存储GDT、IDT的所有数据。然后在debugview中显示出来，最后释放内存
@@ -101,3 +103,10 @@ int main(int argc, char* argv[])
 
 + 都是API用法，貌似没啥好学的，直接抄了一份代码。
 
+
+
+## 系统调用
+
+### 重写ReadProcessMemory（sysenter）
+
++ 这里VC6有个bug，内联汇编的标记在使用的时候（比如push 一个标记地址）这样会把这个地址指向的值压进去。。mov也一样。没想到好办法（可以生成二进制之后再patch一下？），这里直接硬编码写进去了，VS没有这个问题。
