@@ -4,6 +4,10 @@
 
 # windows-kernel-learning
 
+## 逆向
+
++ 这个文件夹里面放了 `kernel32` 、 `ntoskrnl`  、 `ntdll` 的 `idb` ，里面写有一些注释， `PDBDownloader.exe` 是用来下载对应 `pdb` 文件的。如果用ida打开的时候提示需要导入可以使用这个程序来下载相应的 `pdb` 文件然后导入ida，具体做法可以参考这个链接https://www.cnblogs.com/onetrainee/p/11767895.html
+
 ## 驱动
 
 ### 驱动01
