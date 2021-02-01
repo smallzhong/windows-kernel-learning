@@ -110,3 +110,25 @@ int main(int argc, char* argv[])
 ### 重写ReadProcessMemory（sysenter）
 
 + 这里VC6有个bug，内联汇编的标记在使用的时候（比如push 一个标记地址）这样会把这个地址指向的值压进去。。mov也一样。没想到好办法（可以生成二进制之后再patch一下？），这里直接硬编码写进去了，VS没有这个问题。
+
+### 重写ReadProcessMemory（中断门）
+
++ 比 `sysenter` 简单很多，直接复制系统的函数即可。
+
+### SSDThook保护notepad
+
++ 通过 `ObReferenceObjectByHandle` 函数使用三环传过来的句柄获得目标进程的 `EPROCESS` ，然后比较查看目标进程的进程名是不是 `notepad.exe` ，如果是的话查看传进来的句柄是不是 `currentprocess` (-1) 
+
+  ```c
+  if (hProcess == (HANDLE)0xFFFFFFFF)
+  ```
+
+  如果是的话说明是自身通过关闭按钮关闭，正常执行。否则返回 `STATUS_ACCESS_DENIED` 。
+
+  
+
+### 系统调用阶段测试——基于 SSDT HOOK 的 FindWindowA 监视器
+
++ `KeServiceDescriptorTableShadow` 未导出，可以通过特征码搜索（？交叉引用），或者更简单的方法是 `KeServiceDescriptorTableShadow - 0x40` 
++ 要通过devicecontrol来调用，因为调用的进程必须使用过gdi，否则没有挂页会导致蓝屏
++ 懒了，和之前的好像区别不大，不用通过特征码搜索就没多难，咕了咕了
