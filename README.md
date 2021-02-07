@@ -103,6 +103,22 @@ int main(int argc, char* argv[])
 
 + 都是API用法，貌似没啥好学的，直接抄了一份代码。
 
+### 0环与3环通信非常规方式 —— 0环InlineHook
+
++ 这个练习没做好，`inlinehook` 可以成功，但是判断参数不成功。明明传进去的是0x12345，但是就是进不了 `case` 里面，不知道为什么。
+
++ 另外这有个坑，有一些函数不能在头上hook，比如我选的这个 `NtReadVirtualMemory` 。可以看到其开头是这样的
+
+  ![image-20210207205732101](https://cdn.jsdelivr.net/gh/smallzhong/picgo-pic-bed/image-20210207205732101.png)
+
+  明显不能改。不过后面有个地方可以
+
+  ![image-20210207205805558](https://cdn.jsdelivr.net/gh/smallzhong/picgo-pic-bed/image-20210207205805558.png)
+
+  于是我在这里进行了 `inlinehook` 。
+
++ 我的代码可以 `hook` 成功，但是我明明传进去的是0x12345，却判断不出来。留着以后解决吧，反正大致的思路是对了。。
+
 
 
 ## 系统调用
